@@ -4,13 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class SimpleConnectionMaker {
+public class DConnectionMaker implements ConnectionMaker{
     String server = "localhost"; // MySQL 서버 주소
     String database = "toby"; // MySQL DATABASE 이름
     String user_name = "root"; //  MySQL 서버 아이디
     String password = "Init123$"; // MySQL 서버 비밀번호
 
-    public Connection makeNewConnection() throws ClassNotFoundException, SQLException{
+    @Override
+    public Connection makeConnection() throws ClassNotFoundException, SQLException {
         // 1.드라이버 로딩
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

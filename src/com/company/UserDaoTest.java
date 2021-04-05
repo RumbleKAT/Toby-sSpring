@@ -1,0 +1,19 @@
+package com.company;
+
+import java.sql.SQLException;
+
+public class UserDaoTest {
+    public static void main(String [] args) throws ClassNotFoundException, SQLException{
+        ConnectionMaker connectionMaker = new DConnectionMaker();
+        UserDao dao = new UserDao(connectionMaker);
+        //DB 생성 방법이나 전략에 대해서 커플링이 낮아짐
+        //인터페이스를 도입하고 클라이언트의 도움을 얻는 방법은 상속을 사용하는 경우보다 유연하다.
+
+        /*
+        * 전략 패턴은 자신의 기능 맥락에서 필요에 따라,변경이 필요한 알고리즘을 일터페이스를 통해 통째로 외부로 분리
+        * 이를 구현한 구체적인 알고맂므 클래스를 필요에 따라 바꿔서 사용할 수 있게 하는 디자인 패턴
+        * UserDao는 전략 패턴의 컨텍스트에 해당
+        * */
+
+    }
+}
