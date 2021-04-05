@@ -1,11 +1,19 @@
 package com.company;
 
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.sql.SQLException;
 
 public class UserDaoTest {
     public static void main(String [] args) throws ClassNotFoundException, SQLException{
-        ConnectionMaker connectionMaker = new DConnectionMaker();
-        UserDao dao = new UserDao(connectionMaker);
+//        ConnectionMaker connectionMaker = new DConnectionMaker();
+//        UserDao dao = new UserDao(connectionMaker);
+
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        UserDao dao = context.getBean("userDao",UserDao.class);
+
         //DB 생성 방법이나 전략에 대해서 커플링이 낮아짐
         //인터페이스를 도입하고 클라이언트의 도움을 얻는 방법은 상속을 사용하는 경우보다 유연하다.
 
