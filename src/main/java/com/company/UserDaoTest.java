@@ -14,6 +14,22 @@ public class UserDaoTest {
         ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
         UserDao dao = context.getBean("userDao",UserDao.class);
 
+//        UserDao dao3 = context.getBean("userDao",UserDao.class);
+//        UserDao dao4 = context.getBean("userDao",UserDao.class);
+//
+//        System.out.println(dao3);
+//        System.out.println(dao4);
+        User user = new User();
+        user.setId("1");
+        user.setName("song");
+        user.setPassword("0000");
+
+        dao.add(user);
+
+        CountingConnectionMaker countingConnectionMaker = context.getBean("connectionMaker",CountingConnectionMaker.class);
+        System.out.println("Connection counter : " + countingConnectionMaker.getCounter());
+
+
         //DB 생성 방법이나 전략에 대해서 커플링이 낮아짐
         //인터페이스를 도입하고 클라이언트의 도움을 얻는 방법은 상속을 사용하는 경우보다 유연하다.
 
