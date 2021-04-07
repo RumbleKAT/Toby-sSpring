@@ -6,9 +6,13 @@ public class UserDao {
 
     private ConnectionMaker connectionMaker;
 
-//    public UserDao(ConnectionMaker connectionMaker){
-//        this.connectionMaker = connectionMaker;
-//    }
+    public ConnectionMaker getConnectionMaker() {
+        return connectionMaker;
+    }
+
+    public void setConnectionMaker(ConnectionMaker connectionMaker) {
+        this.connectionMaker = connectionMaker;
+    }
 
     public void setConnection(ConnectionMaker connectionMaker){
         this.connectionMaker = connectionMaker;

@@ -3,6 +3,7 @@ package com.company;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.sql.SQLException;
 
@@ -11,7 +12,7 @@ public class UserDaoTest {
 //        ConnectionMaker connectionMaker = new DConnectionMaker();
 //        UserDao dao = new UserDao(connectionMaker);
 
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
         UserDao dao = context.getBean("userDao",UserDao.class);
 
 //        UserDao dao3 = context.getBean("userDao",UserDao.class);
@@ -20,14 +21,14 @@ public class UserDaoTest {
 //        System.out.println(dao3);
 //        System.out.println(dao4);
         User user = new User();
-        user.setId("1");
+        user.setId("4");
         user.setName("song");
         user.setPassword("0000");
 
         dao.add(user);
 
-        CountingConnectionMaker countingConnectionMaker = context.getBean("connectionMaker",CountingConnectionMaker.class);
-        System.out.println("Connection counter : " + countingConnectionMaker.getCounter());
+//        CountingConnectionMaker countingConnectionMaker = context.getBean("connectionMaker",CountingConnectionMaker.class);
+//        System.out.println("Connection counter : " + countingConnectionMaker.getCounter());
 
 
         //DB 생성 방법이나 전략에 대해서 커플링이 낮아짐
