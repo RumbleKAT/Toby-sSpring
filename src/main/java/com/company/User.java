@@ -28,4 +28,11 @@ public class User {
     public String getPassword() {
         return password;
     }
+    public User(){
+    }
+    public User(String id, String name, String password){
+        this.id = id;
+        this.name = name;
+        this.password = password;
+    }
 }
