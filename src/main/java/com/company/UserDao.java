@@ -1,31 +1,26 @@
 package com.company;
 
-import java.sql.*;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserDao {
 
-    private ConnectionMaker connectionMaker;
+    private DataSource dataSource;
 
-    public ConnectionMaker getConnectionMaker() {
-        return connectionMaker;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
-    public void setConnectionMaker(ConnectionMaker connectionMaker) {
-        this.connectionMaker = connectionMaker;
-    }
+    public void add(User user) throws ClassNotFoundException, SQLException {
+        Connection c = dataSource.getConnection();
 
-    public void setConnection(ConnectionMaker connectionMaker){
-        this.connectionMaker = connectionMaker;
-    }
-
-    public void add(User user) throws ClassNotFoundException, SQLException{
-        // 1.드라이버 로딩
-        Connection c = connectionMaker.makeConnection();
-        PreparedStatement ps = c.prepareStatement("insert into users(id,name,password) values (?,?,?)");
-
-        ps.setString(1,user.getId());
-        ps.setString(2,user.getName());
-        ps.setString(3,user.getPassword());
+        PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values (?, ?, ?)");
+        ps.setString(1, user.getId());
+        ps.setString(2, user.getName());
+        ps.setString(3, user.getPassword());
 
         ps.executeUpdate();
 
@@ -33,14 +28,15 @@ public class UserDao {
         c.close();
     }
 
-    public User get(String id) throws ClassNotFoundException, SQLException{
+    public User get(String id) throws ClassNotFoundException, SQLException {
+        Connection c = dataSource.getConnection();
 
-        Connection c = connectionMaker.makeConnection();
         PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
-        ps.setString(1,id);
+        ps.setString(1, id);
 
         ResultSet rs = ps.executeQuery();
         rs.next();
+
         User user = new User();
         user.setId(rs.getString("id"));
         user.setName(rs.getString("name"));

@@ -2,7 +2,6 @@ package com.company;
 
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.sql.SQLException;
@@ -16,12 +15,12 @@ public class UserDaoTest {
         UserDao dao = context.getBean("userDao",UserDao.class);
 
 //        UserDao dao3 = context.getBean("userDao",UserDao.class);
-//        UserDao dao4 = context.getBean("userDao",UserDao.class);
+//        UserDao dao4 = context.getBean("userD®ao",UserDao.class);
 //
 //        System.out.println(dao3);
 //        System.out.println(dao4);
         User user = new User();
-        user.setId("4");
+        user.setId("5");
         user.setName("song");
         user.setPassword("0000");
 
