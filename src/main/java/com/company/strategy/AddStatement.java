@@ -1,7 +1,6 @@
 package com.company.strategy;
 
-import com.company.StatementStrategy;
-import com.company.User;
+import com.company.domain.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

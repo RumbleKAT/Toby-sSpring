@@ -1,7 +1,5 @@
 package com.company.strategy;
 
-import com.company.StatementStrategy;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

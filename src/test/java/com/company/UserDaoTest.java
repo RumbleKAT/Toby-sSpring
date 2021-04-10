@@ -1,15 +1,15 @@
 package com.company;
 
+import com.company.dao.UserDao;
+import com.company.domain.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -31,7 +31,6 @@ class UserDaoTest {
 
     @BeforeEach
     public void loadDao() throws SQLException, ClassNotFoundException {
-//        context = new ClassPathXmlApplicationContext("applicationContext.xml");
         dao = context.getBean("userDao", UserDao.class);
         this.user1 = new User("gyumee","박성철","springno1");
         this.user2 = new User("leegw", "이길원", "spring02");
@@ -41,8 +40,6 @@ class UserDaoTest {
 
     @Test
     public void addAndGet() throws SQLException, ClassNotFoundException {
-//        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
