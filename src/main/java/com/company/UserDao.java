@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.strategy.AddStatement;
+import com.company.strategy.DeleteAllStatement;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import javax.sql.DataSource;
@@ -16,15 +18,38 @@ public class UserDao {
         this.dataSource = dataSource;
     }
 
-    public void deleteAll() throws SQLException{
-        Connection c = dataSource.getConnection();
-        PreparedStatement ps = c.prepareStatement("delete from users");
-        ps.executeUpdate();
-        ps.close();
-        c.close();
+    public void deleteAll() throws SQLException {
+        StatementStrategy st = new DeleteAllStatement();
+        jdbcContextWithStatementStrategy(st);
     }
 
-    public int getCount() throws SQLException{
+    public void jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException {
+        Connection c = null;
+        PreparedStatement ps = null;
+        try {
+            c = dataSource.getConnection();
+            ps = stmt.makePreparedStatement(c);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (c != null) {
+                try {
+                    c.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
+
+
+    public int getCount() throws SQLException {
         Connection c = dataSource.getConnection();
         PreparedStatement ps = c.prepareStatement("select count(*) from users");
 
@@ -39,18 +64,25 @@ public class UserDao {
         return count;
     }
 
-    public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = dataSource.getConnection();
+    private PreparedStatement makeStatement(Connection c) throws SQLException {
+        PreparedStatement ps;
+        ps = c.prepareStatement("delete from users");
+        return ps;
+    }
 
-        PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values (?, ?, ?)");
-        ps.setString(1, user.getId());
-        ps.setString(2, user.getName());
-        ps.setString(3, user.getPassword());
-
-        ps.executeUpdate();
-
-        ps.close();
-        c.close();
+    public void add(final User user) throws ClassNotFoundException, SQLException {
+        class AddStatement implements StatementStrategy{
+            @Override
+            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                PreparedStatement ps = c.prepareStatement("insert into users(id,name,password) values(?,?,?)");
+                ps.setString(1, user.getId());
+                ps.setString(2, user.getName());
+                ps.setString(3, user.getPassword());
+                return ps;
+            }
+        }
+        StatementStrategy st = new AddStatement();
+        jdbcContextWithStatementStrategy(st);
     }
 
     public User get(String id) throws SQLException {
@@ -62,14 +94,14 @@ public class UserDao {
         ResultSet rs = ps.executeQuery();
 
         User user = null;
-        if(rs.next()){
+        if (rs.next()) {
             user = new User();
             user.setId(rs.getString("id"));
             user.setName(rs.getString("name"));
             user.setPassword(rs.getString("password"));
         }
 
-        if(user == null) throw new EmptyResultDataAccessException(1);
+        if (user == null) throw new EmptyResultDataAccessException(1);
 
         rs.close();
         ps.close();
