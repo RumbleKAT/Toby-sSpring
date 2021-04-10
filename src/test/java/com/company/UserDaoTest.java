@@ -1,14 +1,15 @@
 package com.company;
 
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -16,10 +17,12 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.assertThat;
 
-
+@ContextConfiguration(locations = "/applicationContext.xml")
+@SpringBootTest(classes = ApplicationContext.class)
 class UserDaoTest {
 
-    ApplicationContext context;
+    @Autowired
+    private ApplicationContext context;
     UserDao dao;
 
     private User user1;
@@ -28,7 +31,7 @@ class UserDaoTest {
 
     @BeforeEach
     public void loadDao() throws SQLException, ClassNotFoundException {
-        context = new ClassPathXmlApplicationContext("applicationContext.xml");
+//        context = new ClassPathXmlApplicationContext("applicationContext.xml");
         dao = context.getBean("userDao", UserDao.class);
         this.user1 = new User("gyumee","박성철","springno1");
         this.user2 = new User("leegw", "이길원", "spring02");
